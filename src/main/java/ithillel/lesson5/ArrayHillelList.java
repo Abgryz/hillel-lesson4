@@ -23,12 +23,7 @@ public class ArrayHillelList implements HillelList{
     }
 
     public boolean contains(String item){
-        for (String elem : elements) {
-            if (elem.equals(item)){
-                return  true;
-            }
-        }
-        return false;
+        return indexOf(item) != -1;
     }
 
     public int indexOf(String item){
