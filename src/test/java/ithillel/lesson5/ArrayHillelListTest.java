@@ -18,11 +18,11 @@ class ArrayHillelListTest {
         assertEquals(list.remove(0), "item1");
         assertArrayEquals(list.getAll(), new String[]{"item2", "item3"});
 
-//        assertEquals(list.remove(1), "item3");
-//        assertArrayEquals(list.getAll(), new String[]{"item2"});
-//
-//        assertEquals(list.remove(0), "item2");
-//        assertArrayEquals(list.getAll(), new String[]{});
+        assertEquals(list.remove(1), "item3");
+        assertArrayEquals(list.getAll(), new String[]{"item2"});
+
+        assertEquals(list.remove(0), "item2");
+        assertArrayEquals(list.getAll(), new String[]{});
 
         assertThrows(IndexOutOfBoundsException.class, () -> {list.remove(10);});
     }

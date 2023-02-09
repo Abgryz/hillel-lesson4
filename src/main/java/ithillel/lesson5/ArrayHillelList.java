@@ -2,28 +2,28 @@ package ithillel.lesson5;
 
 public class ArrayHillelList implements HillelList{
 
-    private String[] ArrayList = {};
+    private String[] elements = {};
 
     public ArrayHillelList(){}
-    public ArrayHillelList(String[] items){ArrayList = items.clone();}
+    public ArrayHillelList(String[] items){elements = items;}
 
     public String[] getAll() {
-        return ArrayList;
+        return elements;
     }
 
     public int size() {
-        return ArrayList.length;
+        return elements.length;
     }
 
     public void add(String item){
         String[] temp = new String[size() + 1];
         temp[size()] = item;
-        System.arraycopy(ArrayList, 0, temp, 0, size());
-        ArrayList = temp.clone();
+        System.arraycopy(elements, 0, temp, 0, size());
+        elements = temp;
     }
 
     public boolean contains(String item){
-        for (String elem : ArrayList) {
+        for (String elem : elements) {
             if (elem.equals(item)){
                 return  true;
             }
@@ -33,7 +33,7 @@ public class ArrayHillelList implements HillelList{
 
     public int indexOf(String item){
         for (int i = 0; i < size(); i++){
-            if (item.equals(ArrayList[i])){
+            if (item.equals(elements[i])){
                 return i;
             }
         }
@@ -41,15 +41,15 @@ public class ArrayHillelList implements HillelList{
     }
 
     public String get(int index) {
-        return ArrayList[index];
+        return elements[index];
     }
 
     public String remove(int index){
-        String item = ArrayList[index];
+        String item = elements[index];
         String[] temp = new String[size() - 1];
-        System.arraycopy(ArrayList, 0, temp, 0, index);
-        System.arraycopy(ArrayList, index + 1, temp, index, size() - index - 1);
-        ArrayList = temp.clone();
+        System.arraycopy(elements, 0, temp, 0, index);
+        System.arraycopy(elements, index + 1, temp, index, size() - index - 1);
+        elements = temp;
         return item;
     }
 }
