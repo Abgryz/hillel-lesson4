@@ -10,9 +10,6 @@ public class PhoneBook {
     public PhoneBook(List<Record> records) {this.records = records;}
 
     public List<Record> getRecords() {return records;}
-    public void setRecords(List<Record> records) {this.records = records;}
-
-
 
     public void add(Record item){
         records.add(item);
