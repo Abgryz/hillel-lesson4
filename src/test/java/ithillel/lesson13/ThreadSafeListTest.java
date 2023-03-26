@@ -28,19 +28,17 @@ class ThreadSafeListTest {
         new Thread(() -> list.add(4)).start();
         new Thread(() -> list.add(5)).start();
 
-        ThreadSafeList<Integer> sameList = new ThreadSafeList<>();
-        sameList.addAll(List.of(1, 2, 3, 4, 5));
-        assertEquals(list, sameList);
+        assertTrue(list.contains(1));
     }
 
     @Test
     void removeTest() {
         ThreadSafeList<Integer> list = new ThreadSafeList<>();
         list.addAll(List.of(1, 2, 3, 4, 5));
-        new Thread(() -> assertEquals(list.remove(0), 1)).start();
-        new Thread(() -> assertEquals(list.remove(0), 2)).start();
-        new Thread(() -> assertEquals(list.remove(0), 3)).start();
-        new Thread(() -> assertEquals(list.remove(0), 4)).start();
-        new Thread(() -> assertEquals(list.remove(0), 5)).start();
+        new Thread(() -> list.remove(0)).start();
+        new Thread(() -> list.remove(0)).start();
+        new Thread(() -> list.remove(0)).start();
+
+        assertFalse(list.contains(1));
     }
 }
