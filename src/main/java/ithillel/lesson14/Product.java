@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public record Product(String category, double price, boolean canUseSale, LocalDate additonDate) {
+public record Product(String category, double price, boolean canUseSale, LocalDate additionDate) {
     public static List<Product> booksFrom(List<Product> productList){
         return productList.stream()
                 .filter(product -> Objects.equals(product.category, "Book") && product.price > 250)
@@ -17,7 +17,7 @@ public record Product(String category, double price, boolean canUseSale, LocalDa
     public static List<Product> booksWithSale(List<Product> productList){
         return productList.stream()
                 .filter(product -> product.category.equals("Book") && product.canUseSale)
-                .map(product -> new Product(product.category, product.price*0.9, true, product.additonDate))
+                .map(product -> new Product(product.category, product.price*0.9, true, product.additionDate))
                 .toList();
     }
 
@@ -30,14 +30,14 @@ public record Product(String category, double price, boolean canUseSale, LocalDa
 
     public static List<Product> threeLastProducts(List<Product> productList){
         return productList.stream()
-                .sorted((o1, o2) -> o2.additonDate.compareTo(o1.additonDate))
+                .sorted((o1, o2) -> o2.additionDate.compareTo(o1.additionDate))
                 .limit(3)
                 .toList();
     }
 
     public static double calculateBooks(List<Product> productList){
         return productList.stream()
-                .filter((product -> product.additonDate.getYear() == LocalDate.now().getYear()
+                .filter((product -> product.additionDate.getYear() == LocalDate.now().getYear()
                         && product.category.equals("Book")
                         && product.price <= 75))
                 .mapToDouble(product -> product.price)
