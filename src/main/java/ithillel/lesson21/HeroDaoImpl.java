@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class HeroDaoImpl implements HeroDao{
     private final DataSource dataSource;
 
@@ -90,7 +90,7 @@ public class HeroDaoImpl implements HeroDao{
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(long id) {
         String sql = "delete from hero where id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
