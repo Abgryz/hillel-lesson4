@@ -16,4 +16,12 @@ public class HeroService {
                         .build())
                 .collect(Collectors.toList());
     }
+    public List<HeroDto> getHeroesByName(String name){
+        return dao.findByName(name).stream()
+                .map((heroDao) -> HeroDto.builder()
+                        .name(heroDao.getName())
+                        .movies(HeroMovieService.getPlayedIn(heroDao.getName()))
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
