@@ -11,19 +11,21 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class HeroServer {
     private final ServerSocket server;
-//    ExecutorService executor = Executors.newFixedThreadPool(100);
+    ExecutorService executor = Executors.newFixedThreadPool(100);
+    private final List<Socket> clients;
 
     @SneakyThrows
     public HeroServer(int port){
         server = new ServerSocket(port);
+        clients = new ArrayList<>();
     }
 
     public void start(){
@@ -32,10 +34,8 @@ public class HeroServer {
         while (true){
             try {
                 Socket client = server.accept();
-                Thread clientIOThread = new Thread(() -> clientIO(client));
-                clientIOThread.setDaemon(true);
-                clientIOThread.start();
-//                executor.execute(clientIOThread);
+                clients.add(client);
+                executor.execute(() -> clientIO(client));
             } catch (IOException e){
                 System.out.println("Cannot accept client: server is closed");
                 return;
@@ -52,6 +52,7 @@ public class HeroServer {
             while ((inputLine = in.readLine()) != null) {
                 System.out.printf("%s Received message: %s\n", client, inputLine);
                 String[] inputArr = inputLine.split(" ", 2);
+                
                 switch (inputArr[0]) {
                     case "-exit" -> {
                         System.out.println("Closed connection with " + client);
@@ -80,8 +81,10 @@ public class HeroServer {
         Scanner scanner = new Scanner(System.in);
         while (true){
             if(scanner.nextLine().equals("-close")){
-//                executor.awaitTermination(5, TimeUnit.SECONDS);
-//                executor.shutdownNow();
+                for(Socket client : clients){
+                    client.close();
+                }
+                executor.shutdown();
                 server.close();
                 return;
             }
