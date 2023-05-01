@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 
 public class HeroServer {
     private final ServerSocket server;
-    ExecutorService executor = Executors.newFixedThreadPool(100);
+    private final ExecutorService executor = Executors.newFixedThreadPool(100);
     private final List<Socket> clients;
 
     @SneakyThrows
