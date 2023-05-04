@@ -9,7 +9,6 @@ public class HeroDto {
     private String name;
     private List<String> movies;
 
-
     public static HeroDtoBuilder builder(){
         return new HeroDtoBuilder();
     }
