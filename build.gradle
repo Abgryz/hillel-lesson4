@@ -5,8 +5,10 @@
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/8.0.2/samples
  */
 
-plugins{
+plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 group 'org.example'
 version '1.0-SNAPSHOT'
@@ -16,6 +18,13 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.0"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0"
+
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
@@ -32,4 +41,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = false
 }
