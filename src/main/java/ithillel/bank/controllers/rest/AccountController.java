@@ -30,10 +30,13 @@ public class AccountController {
         return accountService.create(iban, personUid);
     }
 
-    @PutMapping("/accounts")
+    @PutMapping("/accounts/{uid}")
     @Transactional
-    public AccountDto update(@RequestBody AccountDto accountDto){
-        return accountService.update(accountDto);
+    public AccountDto update(@RequestBody AccountDto accountDto, @PathVariable String uid){
+        return accountService.update(
+                accountDto.toBuilder()
+                        .uid(uid)
+                        .build());
     }
 
     @DeleteMapping("/accounts/{uid}")
