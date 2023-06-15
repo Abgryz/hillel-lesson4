@@ -6,7 +6,6 @@ import ithillel.bank.tables.account.AccountDto;
 import ithillel.bank.tables.account.AccountRepository;
 import ithillel.bank.tables.person.Person;
 import ithillel.bank.tables.person.PersonRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -111,44 +109,13 @@ class AccountControllerIntegrationTest {
                     .person(PERSONS.get(0))
                     .build()
     );
-    private static final List<AccountDto> ACCOUNT_DTOS = List.of(
+    private static final AccountDto EXPECTED_DTO =
             AccountDto.builder()
                     .iban("ES1234567890123456789012")
                     .uid("1f0e3dad99908345f7439f8ffabdffc4")
                     .balance(1000.00)
                     .personUid(PERSONS.get(0).getUid())
-                    .build(),
-            AccountDto.builder()
-                    .iban("DE9876543210987654321098")
-                    .uid("098f6bcd4621d373cade4e832627b4f6")
-                    .balance(750.50)
-                    .personUid(PERSONS.get(1).getUid())
-                    .build(),
-            AccountDto.builder()
-                    .iban("FR6543210987654321098765")
-                    .uid("875f9e794323b453885f5181f1b624d0b")
-                    .balance(1000.00)
-                    .personUid(PERSONS.get(2).getUid())
-                    .build(),
-            AccountDto.builder()
-                    .iban("IT9876543210987654321098")
-                    .uid("d3d9446802a44259755d38e6d163e820")
-                    .balance(1500.25)
-                    .personUid(PERSONS.get(3).getUid())
-                    .build(),
-            AccountDto.builder()
-                    .iban("GB5432109876543210987654")
-                    .uid("6512bd43d9caa6e02c990b0a82652dca")
-                    .balance(2000.00)
-                    .personUid(PERSONS.get(4).getUid())
-                    .build(),
-            AccountDto.builder()
-                    .iban("US2109876543210987654321")
-                    .uid("32561bd43d9caa6e02c990b0a82652dca")
-                    .balance(300.75)
-                    .personUid(PERSONS.get(0).getUid())
-                    .build()
-    );
+                    .build();
 
     @BeforeEach
     public void fillDB(){
@@ -172,7 +139,7 @@ class AccountControllerIntegrationTest {
         var query = get("/api/accounts/1f0e3dad99908345f7439f8ffabdffc4");
         mockMvc.perform(query)
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(ACCOUNT_DTOS.get(0))));
+                .andExpect(content().json(objectMapper.writeValueAsString(EXPECTED_DTO)));
     }
 
     @Test
@@ -200,11 +167,10 @@ class AccountControllerIntegrationTest {
     @Test
     @Transactional
     public void shouldUpdateAccount() throws Exception {
-        var query = put("/api/accounts")
+        var query = put("/api/accounts/1f0e3dad99908345f7439f8ffabdffc4")
                 .content(objectMapper.writeValueAsString(
                         AccountDto.builder()
                                 .balance(200)
-                                .uid(ACCOUNTS.get(0).getUid())
                                 .iban(ACCOUNTS.get(0).getIban())
                                 .personUid(PERSONS.get(0).getUid())
                                 .build()
@@ -215,12 +181,12 @@ class AccountControllerIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        Account expectedAccount = accountRepository.findAccountByUid(ACCOUNTS.get(0).getUid()).orElseThrow();
+        Account expectedAccount = accountRepository.findAccountByUid("1f0e3dad99908345f7439f8ffabdffc4").orElseThrow();
         assertEquals(response, objectMapper.writeValueAsString(
                 AccountDto.builder()
                         .iban(expectedAccount.getIban())
                         .personUid(expectedAccount.getPerson().getUid())
-                        .balance(expectedAccount.getBalance())
+                        .balance(200)
                         .uid(expectedAccount.getUid())
                         .build()
         ));
