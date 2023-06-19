@@ -2,23 +2,17 @@ package ithillel.bank.controllers.rest;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 import ithillel.bank.config.WireMockConfig;
-import ithillel.bank.currency.config.CurrenciesProperties;
-import ithillel.bank.currency.converter.CurrencyConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,8 +23,6 @@ class CurrencyControllerIntegrationTest {
     protected MockMvc mockMvc;
     @Autowired
     protected WireMockServer wireMockServer;
-    @Autowired
-    protected CurrenciesProperties currenciesProperties;
 
     @DynamicPropertySource
     public static void registerWiremockBaseUrl(DynamicPropertyRegistry registry) {
