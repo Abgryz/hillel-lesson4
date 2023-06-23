@@ -4,10 +4,12 @@ import ithillel.bank.tables.account.AccountDto;
 import ithillel.bank.tables.account.AccountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -16,23 +18,27 @@ public class AccountController {
 
     @GetMapping("/accounts")
     public List<AccountDto> getAll(){
+        log.info("getAllAccounts");
         return accountService.getAll();
     }
 
     @GetMapping("/accounts/{uid}")
     public AccountDto getAccount(@PathVariable String uid){
+        log.info("getAccount: uid={}", uid);
         return accountService.getByUid(uid);
     }
 
     @PostMapping("/accounts")
     @Transactional
     public AccountDto create(@RequestParam String personUid, @RequestParam String iban){
+        log.info("createAccount: personUid={}, iban={}", personUid, iban);
         return accountService.create(iban, personUid);
     }
 
     @PutMapping("/accounts/{uid}")
     @Transactional
     public AccountDto update(@RequestBody AccountDto accountDto, @PathVariable String uid){
+        log.info("updateAccount: accountDto={}, uid={}", accountDto, uid);
         return accountService.update(
                 accountDto.toBuilder()
                         .uid(uid)
@@ -42,6 +48,7 @@ public class AccountController {
     @DeleteMapping("/accounts/{uid}")
     @Transactional
     public void delete(@PathVariable String uid){
+        log.info("deleteAccount: uid={}", uid);
         accountService.deleteByUid(uid);
     }
 }
