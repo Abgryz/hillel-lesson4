@@ -18,6 +18,7 @@ public class AccountMapper implements Mapper<AccountDto, Account>{
                 .iban(account.getIban())
                 .personUid(account.getPerson().getUid())
                 .uid(account.getUid())
+                .currency(account.getCurrency())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class AccountMapper implements Mapper<AccountDto, Account>{
                 .uid(accountDto.uid())
                 .balance(accountDto.balance())
                 .iban(accountDto.iban())
+                .currency(accountDto.currency())
                 .person(personRepository.findByUid(accountDto.personUid()).orElseThrow())
                 .build();
     }

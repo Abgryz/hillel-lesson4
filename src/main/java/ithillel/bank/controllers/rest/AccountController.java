@@ -30,9 +30,9 @@ public class AccountController {
 
     @PostMapping("/accounts")
     @Transactional
-    public AccountDto create(@RequestParam String personUid, @RequestParam String iban){
-        log.info("createAccount: personUid={}, iban={}", personUid, iban);
-        return accountService.create(iban, personUid);
+    public AccountDto create(@RequestParam String personUid, @RequestParam String iban, @RequestParam String currency){
+        log.info("createAccount: personUid={}, iban={}, currency={}", personUid, iban, currency);
+        return accountService.create(iban, personUid, currency);
     }
 
     @PutMapping("/accounts/{uid}")
