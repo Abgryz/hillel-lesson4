@@ -47,17 +47,6 @@ class TransactionControllerIntegrationTest {
     @Autowired
     protected TransactionRepository transactionRepository;
 
-    private static final List<Person> PERSONS = List.of(
-            Person.builder()
-                    .name("John Smith")
-                    .uid("1f0e3dad99908345f7439f8ffabdffc4")
-                    .build(),
-            Person.builder()
-                    .name("Emily Johnson")
-                    .uid("098f6bcd4621d373cade4e832627b4f6")
-                    .build()
-    );
-
     @DynamicPropertySource
     public static void registerWiremockBaseUrl(DynamicPropertyRegistry registry) {
         registry.add("wiremock.baseurl", WireMockConfig.wireMockServer::baseUrl);
@@ -66,19 +55,27 @@ class TransactionControllerIntegrationTest {
     void createTransactionWithoutConvertTest() throws Exception {
         Account fromAccount = accountRepository.saveAndFlush(
                 Account.builder()
-                        .iban("US1234567890123456789012")
+                        .iban("US1234567890123456789010")
                         .currency("USD")
-                        .person(personRepository.saveAndFlush(PERSONS.get(0)))
+                        .person(personRepository.saveAndFlush(
+                                Person.builder()
+                                        .name("John Smith")
+                                        .uid("1f0e3dad99908345f7439f8ffabdffc0")
+                                        .build()))
                         .balance(200)
-                        .uid("1f0e3dad99908345f7439f8ffabdffc4")
+                        .uid("1f0e3dad99908345f7439f8ffabdffc0")
                         .build());
         Account toAccount = accountRepository.saveAndFlush(
                 Account.builder()
-                        .iban("GB5432109876543210987654")
+                        .iban("GB5432109876543210987650")
                         .currency("USD")
-                        .person(personRepository.saveAndFlush(PERSONS.get(1)))
+                        .person(personRepository.saveAndFlush(
+                                Person.builder()
+                                        .name("Emily Johnson")
+                                        .uid("098f6bcd4621d373cade4e832627b4f0")
+                                        .build()))
                         .balance(100)
-                        .uid("098f6bcd4621d373cade4e832627b4f6")
+                        .uid("098f6bcd4621d373cade4e832627b4f0")
                         .build());
 
         var requestBody = TransactionData.builder()
@@ -99,8 +96,8 @@ class TransactionControllerIntegrationTest {
         responseData.setCreatedAt(null);
         requestBody.setUid(responseData.getUid());
         assertEquals(responseData, requestBody);
-        assertEquals(accountRepository.findAccountByIban("US1234567890123456789012").orElseThrow().getBalance(), 0);
-        assertEquals(accountRepository.findAccountByIban("GB5432109876543210987654").orElseThrow().getBalance(), 300.0);
+        assertEquals(accountRepository.findAccountByIban("US1234567890123456789010").orElseThrow().getBalance(), 0);
+        assertEquals(accountRepository.findAccountByIban("GB5432109876543210987650").orElseThrow().getBalance(), 300.0);
 
         Transaction transaction = transactionRepository.findByUid(responseData.getUid()).orElseThrow();
         assertEquals(transaction.getFromAccount().getIban(), responseData.getFrom());
@@ -113,7 +110,11 @@ class TransactionControllerIntegrationTest {
                 Account.builder()
                         .iban("US1234567890123456789012")
                         .currency("USD")
-                        .person(personRepository.saveAndFlush(PERSONS.get(0)))
+                        .person(personRepository.saveAndFlush(
+                                Person.builder()
+                                        .name("John Smith")
+                                        .uid("1f0e3dad99908345f7439f8ffabdffc5")
+                                        .build()))
                         .balance(200)
                         .uid("1f0e3dad99908345f7439f8ffabdffc4")
                         .build());
@@ -121,7 +122,11 @@ class TransactionControllerIntegrationTest {
                 Account.builder()
                         .iban("GB5432109876543210987654")
                         .currency("GBP")
-                        .person(personRepository.saveAndFlush(PERSONS.get(1)))
+                        .person(personRepository.saveAndFlush(
+                                Person.builder()
+                                        .name("Emily Johnson")
+                                        .uid("098f6bcd4621d373cade4e832627b4f7")
+                                        .build()))
                         .balance(100)
                         .uid("098f6bcd4621d373cade4e832627b4f6")
                         .build());
