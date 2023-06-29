@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findAccountByUid(String uid);
+    Optional<Account> findAccountByIban(String iban);
     void deleteAccountByUid(String uid);
 
     @Query(value = """

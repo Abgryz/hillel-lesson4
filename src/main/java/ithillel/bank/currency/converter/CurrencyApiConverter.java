@@ -2,7 +2,7 @@ package ithillel.bank.currency.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ithillel.bank.currency.config.CurrenciesProperties;
-import ithillel.bank.currency.model.CurrencyData;
+import ithillel.bank.currency.model.data.CurrencyData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;

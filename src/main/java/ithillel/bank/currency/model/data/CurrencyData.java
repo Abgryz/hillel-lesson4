@@ -1,4 +1,4 @@
-package ithillel.bank.currency.model;
+package ithillel.bank.currency.model.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
