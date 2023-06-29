@@ -25,13 +25,14 @@ public class AccountService {
         return accountMapper.toDto(accountRepository.findAll());
     }
 
-    public AccountDto create(String iban, String personUid){
+    public AccountDto create(String iban, String personUid, String currency){
         String uid = UUID.randomUUID().toString().replace("-", "");
         return accountMapper.toDto(accountRepository.saveAndFlush(
                 Account.builder()
                         .iban(iban)
                         .person(personRepository.findByUid(personUid).orElseThrow())
                         .uid(uid)
+                        .currency(currency)
                         .balance(0)
                         .build()
         ));
@@ -43,6 +44,7 @@ public class AccountService {
                         .balance(accountDto.balance())
                         .iban(accountDto.iban())
                         .person(personRepository.findByUid(accountDto.personUid()).orElseThrow())
+                        .currency(accountDto.currency())
                         .build())
         );
     }

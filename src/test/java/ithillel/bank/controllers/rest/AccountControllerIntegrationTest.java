@@ -77,36 +77,42 @@ class AccountControllerIntegrationTest {
                     .uid("1f0e3dad99908345f7439f8ffabdffc4")
                     .balance(1000.00)
                     .person(PERSONS.get(0))
+                    .currency("EUR")
                     .build(),
             Account.builder()
                     .iban("DE9876543210987654321098")
                     .uid("098f6bcd4621d373cade4e832627b4f6")
                     .balance(750.50)
                     .person(PERSONS.get(1))
+                    .currency("EUR")
                     .build(),
             Account.builder()
                     .iban("FR6543210987654321098765")
                     .uid("875f9e794323b453885f5181f1b624d0b")
                     .balance(1000.00)
                     .person(PERSONS.get(2))
+                    .currency("EUR")
                     .build(),
             Account.builder()
                     .iban("IT9876543210987654321098")
                     .uid("d3d9446802a44259755d38e6d163e820")
                     .balance(1500.25)
                     .person(PERSONS.get(3))
+                    .currency("EUR")
                     .build(),
             Account.builder()
                     .iban("GB5432109876543210987654")
                     .uid("6512bd43d9caa6e02c990b0a82652dca")
                     .balance(2000.00)
                     .person(PERSONS.get(4))
+                    .currency("GBP")
                     .build(),
             Account.builder()
                     .iban("US2109876543210987654321")
                     .uid("32561bd43d9caa6e02c990b0a82652dca")
                     .balance(300.75)
                     .person(PERSONS.get(0))
+                    .currency("EUR")
                     .build()
     );
     private static final AccountDto EXPECTED_DTO =
@@ -115,6 +121,7 @@ class AccountControllerIntegrationTest {
                     .uid("1f0e3dad99908345f7439f8ffabdffc4")
                     .balance(1000.00)
                     .personUid(PERSONS.get(0).getUid())
+                    .currency("EUR")
                     .build();
 
     @BeforeEach
@@ -147,7 +154,8 @@ class AccountControllerIntegrationTest {
     public void shouldCreateAccount() throws Exception {
         var query = post("/api/accounts")
                 .param("personUid", "1f0e3dad99908345f7439f8ffabdffc4")
-                .param("iban", "GB5432109876543210987654");
+                .param("iban", "US5432109876543210987654")
+                .param("currency", "USD");
         var response = mockMvc.perform(query)
                 .andExpect(status().isOk())
                 .andReturn()
@@ -160,6 +168,7 @@ class AccountControllerIntegrationTest {
                     .personUid(expectedAccount.getPerson().getUid())
                     .balance(expectedAccount.getBalance())
                     .uid(expectedAccount.getUid())
+                    .currency(expectedAccount.getCurrency())
                     .build()
         ));
     }
@@ -173,6 +182,7 @@ class AccountControllerIntegrationTest {
                                 .balance(200)
                                 .iban(ACCOUNTS.get(0).getIban())
                                 .personUid(PERSONS.get(0).getUid())
+                                .currency(ACCOUNTS.get(0).getCurrency())
                                 .build()
                 ))
                 .contentType(MediaType.APPLICATION_JSON);
@@ -188,6 +198,7 @@ class AccountControllerIntegrationTest {
                         .personUid(expectedAccount.getPerson().getUid())
                         .balance(200)
                         .uid(expectedAccount.getUid())
+                        .currency(expectedAccount.getCurrency())
                         .build()
         ));
     }

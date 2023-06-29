@@ -23,6 +23,8 @@ public class Account {
 
     private double balance;
 
+    private String currency;
+
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
